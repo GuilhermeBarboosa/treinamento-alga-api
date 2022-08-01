@@ -13,13 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
 public class ClienteController {
-
-//	@PersistenceContext
-//	private EntityManager manager;
 
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -41,12 +39,13 @@ public class ClienteController {
 
 	@PostMapping("/clientes")
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente adicionar(@RequestBody Cliente cliente){
+	public Cliente adicionar(@Valid @RequestBody Cliente cliente){
 		return clienteRepository.save(cliente);
 	}
 
 	@PutMapping("/clientes/{clienteId}")
-	public ResponseEntity<Cliente> modificar(@PathVariable Long clienteId,
+	public ResponseEntity<Cliente> modificar(@Valid
+											 @PathVariable Long clienteId,
 											 @RequestBody Cliente cliente){
 		if(!clienteRepository.existsById(clienteId)){
 			return ResponseEntity.notFound().build();
@@ -54,6 +53,16 @@ public class ClienteController {
 			cliente.setId(clienteId);
 			cliente = clienteRepository.save(cliente);
 			return ResponseEntity.ok(cliente);
+		}
+	}
+
+	@DeleteMapping("/clientes/{clienteId}")
+	public ResponseEntity<Cliente> deletar(@PathVariable Long clienteId){
+		if(!clienteRepository.existsById(clienteId)){
+			return ResponseEntity.notFound().build();
+		}else{
+			clienteRepository.deleteById(clienteId);
+			return ResponseEntity.noContent().build();
 		}
 	}
 	
