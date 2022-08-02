@@ -1,4 +1,4 @@
-package com.treinamento.codiub;
+package com.treinamento;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,5 +9,15 @@ public class TreinamentoApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TreinamentoApiApplication.class, args);
 	}
+
+//	@Bean
+//	public WebMvcConfigurer corsConfigurer() {
+//		return new WebMvcConfigurerAdapter() {
+//			@Override
+//			public void addCorsMappings(CorsRegistry registry) {
+//				registry.addMapping("/**").allowedOrigins("http://localhost:8000");
+//			}
+//		};
+//	}
 
 }

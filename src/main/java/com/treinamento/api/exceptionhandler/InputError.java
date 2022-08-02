@@ -1,4 +1,4 @@
-package com.treinamento.codiub.api.exceptionhandler;
+package com.treinamento.api.exceptionhandler;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

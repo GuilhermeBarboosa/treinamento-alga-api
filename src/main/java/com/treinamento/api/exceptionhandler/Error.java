@@ -1,4 +1,4 @@
-package com.treinamento.codiub.api.exceptionhandler;
+package com.treinamento.api.exceptionhandler;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;

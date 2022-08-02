@@ -1,6 +1,6 @@
-package com.treinamento.codiub.domain.repository;
+package com.treinamento.domain.repository;
 
-import com.treinamento.codiub.domain.model.Cliente;
+import com.treinamento.domain.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.treinamento.codiub.domain.exception;
+package com.treinamento.domain.exception;
 
 public class DomainException extends RuntimeException{
     private static final long serialVersionUID = 1L;

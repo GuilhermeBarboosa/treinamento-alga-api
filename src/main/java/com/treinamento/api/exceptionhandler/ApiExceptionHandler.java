@@ -1,6 +1,6 @@
-package com.treinamento.codiub.api.exceptionhandler;
+package com.treinamento.api.exceptionhandler;
 
-import com.treinamento.codiub.domain.exception.DomainException;
+import com.treinamento.domain.exception.DomainException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

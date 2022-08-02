@@ -1,8 +1,8 @@
-package com.treinamento.codiub.domain.service;
+package com.treinamento.domain.service;
 
-import com.treinamento.codiub.domain.exception.DomainException;
-import com.treinamento.codiub.domain.model.Cliente;
-import com.treinamento.codiub.domain.repository.ClienteRepository;
+import com.treinamento.domain.exception.DomainException;
+import com.treinamento.domain.model.Cliente;
+import com.treinamento.domain.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,7 @@ public class CrudClienteService {
     private ClienteRepository clienteRepository;
 
     @Transactional
-    public  Cliente salvar(Cliente cliente){
+    public Cliente salvar(Cliente cliente){
         Optional<Cliente> clienteResponse = clienteRepository.findByEmail(cliente.getEmail());
        if(clienteResponse.isPresent()){
            if(clienteResponse.equals(cliente)){

@@ -1,4 +1,4 @@
-package com.treinamento.codiub.domain.model;
+package com.treinamento.domain.model;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

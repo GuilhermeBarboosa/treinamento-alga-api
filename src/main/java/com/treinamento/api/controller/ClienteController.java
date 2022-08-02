@@ -1,19 +1,16 @@
-package com.treinamento.codiub.api.controller;
+package com.treinamento.api.controller;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.treinamento.codiub.domain.model.Cliente;
-import com.treinamento.codiub.domain.repository.ClienteRepository;
-import com.treinamento.codiub.domain.service.CrudClienteService;
+import com.treinamento.domain.model.Cliente;
+import com.treinamento.domain.repository.ClienteRepository;
+import com.treinamento.domain.service.CrudClienteService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 
 @RestController
