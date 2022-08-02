@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.treinamento.codiub.domain.model.Cliente;
 import com.treinamento.codiub.domain.repository.ClienteRepository;
+import com.treinamento.codiub.domain.service.CrudClienteService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,17 +18,18 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("/clientes")
 public class ClienteController {
 
-	@Autowired
 	private ClienteRepository clienteRepository;
+	private CrudClienteService crudClienteService;
 
-	@GetMapping("/clientes")
-	public List listar() {
+	@GetMapping
+	public List<Cliente> listar() {
 		return clienteRepository.findAll();
 	}
 
-	@GetMapping("/clientes/{clienteId}")
+	@GetMapping("/{clienteId}")
 	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId){
 		Optional<Cliente> cliente = clienteRepository.findById(clienteId);
 		if(cliente.isPresent()){
@@ -37,13 +39,13 @@ public class ClienteController {
 		}
 	}
 
-	@PostMapping("/clientes")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionar(@Valid @RequestBody Cliente cliente){
-		return clienteRepository.save(cliente);
+		return crudClienteService.salvar(cliente);
 	}
 
-	@PutMapping("/clientes/{clienteId}")
+	@PutMapping("/{clienteId}")
 	public ResponseEntity<Cliente> modificar(@Valid
 											 @PathVariable Long clienteId,
 											 @RequestBody Cliente cliente){
@@ -51,17 +53,17 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}else{
 			cliente.setId(clienteId);
-			cliente = clienteRepository.save(cliente);
+			cliente = crudClienteService.salvar(cliente);
 			return ResponseEntity.ok(cliente);
 		}
 	}
 
-	@DeleteMapping("/clientes/{clienteId}")
+	@DeleteMapping("/{clienteId}")
 	public ResponseEntity<Cliente> deletar(@PathVariable Long clienteId){
 		if(!clienteRepository.existsById(clienteId)){
 			return ResponseEntity.notFound().build();
 		}else{
-			clienteRepository.deleteById(clienteId);
+			crudClienteService.excluir(clienteId);
 			return ResponseEntity.noContent().build();
 		}
 	}
