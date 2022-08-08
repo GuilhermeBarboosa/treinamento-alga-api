@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -13,7 +14,7 @@ import java.util.List;
 public class Error {
 
     private Integer status;
-    private LocalDateTime dateHour;
+    private OffsetDateTime dateHour;
     private String title;
     private List<InputError> input;
 

@@ -1,5 +1,6 @@
 package com.treinamento.api.controller;
 
+import com.treinamento.domain.exception.DomainException;
 import com.treinamento.domain.model.Entrega;
 import com.treinamento.domain.repository.EntregaRepository;
 import com.treinamento.domain.service.SolicitacaoEntregaService;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,17 +29,28 @@ public class EntregaController {
     }
 
     @GetMapping
-    public List<Entrega> listar(){
+    public List<Entrega> listar() {
         return entregaRepository.findAll();
     }
 
     @GetMapping("{entregaId}")
-    public ResponseEntity<Entrega> procurarEntrega(@PathVariable Long entregaId){
+    public ResponseEntity<Entrega> procurarEntrega(@PathVariable Long entregaId) {
         Optional<Entrega> entrega = entregaRepository.findById(entregaId);
-        if(entrega.isPresent()){
+        if (entrega.isPresent()) {
             return ResponseEntity.ok(entrega.get());
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @PutMapping("/encerrar/{entregaId}")
+    public ResponseEntity<Entrega> encerrarEntrega(@Valid
+                                                   @PathVariable Long entregaId) {
+        Entrega entrega = entregaRepository.findById(entregaId).orElseThrow(() -> new DomainException("Entrega não emcontrada"));
+        entrega.setId(entrega.getId());
+        entrega.setDataFinalizacao(OffsetDateTime.now());
+        entrega = solicitacaoEntregaService.solicitar(entrega);
+        return ResponseEntity.ok(entrega);
+    }
+
 }
