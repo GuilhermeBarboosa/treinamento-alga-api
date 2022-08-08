@@ -1,6 +1,9 @@
 package com.treinamento.api.exceptionhandler;
 
 import com.treinamento.domain.exception.DomainException;
+import lombok.AllArgsConstructor;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ControllerAdvice
+@AllArgsConstructor
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
+
+    private MessageSource messageSource;
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<InputError> errorInputs = new ArrayList();
        for (ObjectError errorType : ex.getBindingResult().getAllErrors()){
            String name = ((FieldError) errorType).getField();
-           String message = errorType.getDefaultMessage();
+           String message = messageSource.getMessage(errorType, LocaleContextHolder.getLocale());
            errorInputs.add(new InputError(name, message));
        }
 
@@ -31,7 +37,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         error.setStatus(status.value());
         error.setDateHour(LocalDateTime.now());
         error.setTitle("Input invalid");
-
+        error.setInput(errorInputs);
         return handleExceptionInternal(ex, error, headers, status, request);
     }
 

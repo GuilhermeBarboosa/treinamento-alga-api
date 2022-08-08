@@ -1,15 +1,16 @@
 package com.treinamento.domain.model;
 
+import com.treinamento.domain.ValidationGroups;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.validation.groups.Default;
 
 @Getter
 @Setter
@@ -18,22 +19,22 @@ import javax.validation.constraints.Size;
 @Table(name = "clientes")
 public class Cliente {
 
+    @NotNull(groups = ValidationGroups.ClienteId.class)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
+    private Long id;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@EqualsAndHashCode.Include
-	private Long id;
+    @NotBlank
+    @Size(min = 1, max = 60)
+    private String nome;
 
-	@NotBlank
-	@Size(min = 1, max = 60)
-	private String nome;
+    @NotBlank
+    @Email
+    private String email;
 
-	@NotBlank
-	@Email
-	private String email;
-
-	@NotBlank
+    @NotBlank
     @Column(name = "fone")
-	private String telefone;
+    private String telefone;
 
 }
