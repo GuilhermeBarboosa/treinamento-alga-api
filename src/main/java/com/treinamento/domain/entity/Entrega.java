@@ -1,12 +1,10 @@
-package com.treinamento.domain.model;
+package com.treinamento.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.treinamento.domain.ValidationGroups;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -14,7 +12,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Getter

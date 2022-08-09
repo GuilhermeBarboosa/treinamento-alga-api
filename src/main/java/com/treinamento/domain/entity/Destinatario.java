@@ -1,4 +1,4 @@
-package com.treinamento.domain.model;
+package com.treinamento.domain.entity;
 
 import lombok.Getter;
 import lombok.Setter;

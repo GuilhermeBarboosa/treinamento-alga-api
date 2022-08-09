@@ -1,4 +1,4 @@
-package com.treinamento.domain.model;
+package com.treinamento.domain.entity;
 
 import com.treinamento.domain.ValidationGroups;
 import lombok.EqualsAndHashCode;
@@ -10,7 +10,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.validation.groups.Default;
 
 @Getter
 @Setter

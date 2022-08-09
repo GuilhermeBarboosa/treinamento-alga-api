@@ -1,7 +1,7 @@
 package com.treinamento.domain.service;
 
 import com.treinamento.domain.exception.DomainException;
-import com.treinamento.domain.model.Cliente;
+import com.treinamento.domain.entity.Cliente;
 import com.treinamento.domain.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import java.util.Optional;
 public class CrudClienteService {
 
     private ClienteRepository clienteRepository;
-
 
     public Cliente buscarClienteSolicitacao(Long id) {
         return clienteRepository.findById(id)

@@ -1,19 +1,29 @@
 package com.treinamento.api.controller;
 
-import com.treinamento.domain.exception.DomainException;
-import com.treinamento.domain.model.Entrega;
-import com.treinamento.domain.repository.EntregaRepository;
-import com.treinamento.domain.service.SolicitacaoEntregaService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
+
+import javax.validation.Valid;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.treinamento.api.output.EntregaOutput;
+import com.treinamento.domain.exception.DomainException;
+import com.treinamento.domain.entity.Entrega;
+import com.treinamento.domain.repository.EntregaRepository;
+import com.treinamento.domain.service.SolicitacaoEntregaService;
+
+import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
@@ -21,6 +31,7 @@ import java.util.Optional;
 public class EntregaController {
     private SolicitacaoEntregaService solicitacaoEntregaService;
     private EntregaRepository entregaRepository;
+    private ModelMapper modelMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -34,13 +45,14 @@ public class EntregaController {
     }
 
     @GetMapping("{entregaId}")
-    public ResponseEntity<Entrega> procurarEntrega(@PathVariable Long entregaId) {
-        Optional<Entrega> entrega = entregaRepository.findById(entregaId);
-        if (entrega.isPresent()) {
-            return ResponseEntity.ok(entrega.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<EntregaOutput> procurarEntrega(@PathVariable Long entregaId) {
+        return entregaRepository.findById(entregaId)
+                .map(entrega -> {
+
+                        EntregaOutput entregaOutput = modelMapper.map(entrega, EntregaOutput.class);
+//                    EntregaOutput entregaOutput = new EntregaOutput(entrega);
+                    return ResponseEntity.ok(entregaOutput);
+                }).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/encerrar/{entregaId}")
