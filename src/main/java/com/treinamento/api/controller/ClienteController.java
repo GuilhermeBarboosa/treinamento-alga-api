@@ -1,17 +1,20 @@
 package com.treinamento.api.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.treinamento.api.input.ClienteInput;
+import com.treinamento.api.mapper.ClienteMapper;
+import com.treinamento.api.output.ClienteIdOutput;
+import com.treinamento.api.output.ClienteOutput;
 import com.treinamento.domain.entity.Cliente;
 import com.treinamento.domain.repository.ClienteRepository;
-import com.treinamento.domain.service.CrudClienteService;
+import com.treinamento.domain.service.ClienteService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -19,7 +22,8 @@ import javax.validation.Valid;
 public class ClienteController {
 	
 	private ClienteRepository clienteRepository;
-	private CrudClienteService crudClienteService;
+	private ClienteService clienteService;
+	private ClienteMapper clienteMapper;
 
 	@GetMapping
 	public List<Cliente> listar() {
@@ -27,19 +31,17 @@ public class ClienteController {
 	}
 
 	@GetMapping("/{clienteId}")
-	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId){
-		Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-		if(cliente.isPresent()){
-			return ResponseEntity.ok(cliente.get());
-		}else{
-			return ResponseEntity.notFound().build();
-		}
+	public ResponseEntity<ClienteOutput> buscar(@PathVariable Long clienteId){
+		return clienteRepository.findById(clienteId)
+				.map(cliente -> ResponseEntity.ok(clienteMapper.toModel(cliente)))
+						.orElse(ResponseEntity.notFound().build());
 	}
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Cliente adicionar(@Valid @RequestBody Cliente cliente){
-		return crudClienteService.salvar(cliente);
+	public ClienteOutput adicionar(@Valid @RequestBody ClienteInput clienteInput){
+		Cliente newCliente = clienteMapper.toConvert(clienteInput);
+		return clienteMapper.toModel(clienteService.salvar(newCliente));
 	}
 
 	@PutMapping("/{clienteId}")
@@ -50,7 +52,7 @@ public class ClienteController {
 			return ResponseEntity.notFound().build();
 		}else{
 			cliente.setId(clienteId);
-			cliente = crudClienteService.salvar(cliente);
+			cliente = clienteService.salvar(cliente);
 			return ResponseEntity.ok(cliente);
 		}
 	}
@@ -60,7 +62,7 @@ public class ClienteController {
 		if(!clienteRepository.existsById(clienteId)){
 			return ResponseEntity.notFound().build();
 		}else{
-			crudClienteService.excluir(clienteId);
+			clienteService.excluir(clienteId);
 			return ResponseEntity.noContent().build();
 		}
 	}

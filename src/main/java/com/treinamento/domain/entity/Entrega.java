@@ -16,7 +16,6 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-
 @Entity
 public class Entrega {
 
@@ -25,10 +24,7 @@ public class Entrega {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Valid
-    @ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class)
     @ManyToOne
-    @NotNull
     @JoinColumn(name = "cliente")
     private Cliente cliente;
 

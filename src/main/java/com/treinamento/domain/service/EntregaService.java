@@ -13,16 +13,16 @@ import java.time.OffsetDateTime;
 
 @Service
 @AllArgsConstructor
-public class SolicitacaoEntregaService {
+public class EntregaService {
 
     @Autowired
     private EntregaRepository entregaRepository;
 
-    private CrudClienteService crudClienteService;
+    private ClienteService clienteService;
 
     @Transactional
     public Entrega solicitar(Entrega entrega) {
-        Cliente cliente = crudClienteService.buscarClienteSolicitacao(entrega.getCliente().getId());
+        Cliente cliente = clienteService.buscarClienteSolicitacao(entrega.getCliente().getId());
         entrega.setCliente(cliente);
         entrega.setStatus(StatusEntrega.PENDENTE);
         entrega.setDataPedido(OffsetDateTime.now());

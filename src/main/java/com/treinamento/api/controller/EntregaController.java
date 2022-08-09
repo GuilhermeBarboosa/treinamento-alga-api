@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.treinamento.api.input.EntregaInput;
+import com.treinamento.api.mapper.EntregaMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ import com.treinamento.api.output.EntregaOutput;
 import com.treinamento.domain.exception.DomainException;
 import com.treinamento.domain.entity.Entrega;
 import com.treinamento.domain.repository.EntregaRepository;
-import com.treinamento.domain.service.SolicitacaoEntregaService;
+import com.treinamento.domain.service.EntregaService;
 
 import lombok.AllArgsConstructor;
 
@@ -29,30 +31,27 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("/entrega")
 public class EntregaController {
-    private SolicitacaoEntregaService solicitacaoEntregaService;
+    private EntregaService entregaService;
     private EntregaRepository entregaRepository;
-    private ModelMapper modelMapper;
+    private EntregaMapper entregaMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Entrega solicitar(@RequestBody @Valid Entrega entrega) {
-        return solicitacaoEntregaService.solicitar(entrega);
+    public EntregaOutput solicitar(@RequestBody @Valid EntregaInput entregaInput) {
+        Entrega novaEntrega = entregaMapper.toConvert(entregaInput);
+        return entregaMapper.toModel(entregaService.solicitar(novaEntrega));
     }
 
     @GetMapping
-    public List<Entrega> listar() {
-        return entregaRepository.findAll();
+    public List<EntregaOutput> listar() {
+        return entregaMapper.toListOutput(entregaRepository.findAll());
     }
 
     @GetMapping("{entregaId}")
     public ResponseEntity<EntregaOutput> procurarEntrega(@PathVariable Long entregaId) {
         return entregaRepository.findById(entregaId)
-                .map(entrega -> {
-
-                        EntregaOutput entregaOutput = modelMapper.map(entrega, EntregaOutput.class);
-//                    EntregaOutput entregaOutput = new EntregaOutput(entrega);
-                    return ResponseEntity.ok(entregaOutput);
-                }).orElse(ResponseEntity.notFound().build());
+                .map(entrega -> ResponseEntity.ok(entregaMapper.toModel(entrega))
+                ).orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/encerrar/{entregaId}")
@@ -61,7 +60,7 @@ public class EntregaController {
         Entrega entrega = entregaRepository.findById(entregaId).orElseThrow(() -> new DomainException("Entrega não emcontrada"));
         entrega.setId(entrega.getId());
         entrega.setDataFinalizacao(OffsetDateTime.now());
-        entrega = solicitacaoEntregaService.solicitar(entrega);
+        entrega = entregaService.solicitar(entrega);
         return ResponseEntity.ok(entrega);
     }
 
