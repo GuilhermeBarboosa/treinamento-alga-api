@@ -13,7 +13,6 @@
     <artifactId>treinamento-alga-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>treinamento-alga-api</name>
-    <packaging>war</packaging>
     <description>API de Treinamento</description>
 
     <properties>
@@ -74,6 +73,7 @@
             <version>3.1.0</version>
         </dependency>
     </dependencies>
+    
     <build>
         <plugins>
             <plugin>
