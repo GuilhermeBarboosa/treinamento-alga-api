@@ -23,7 +23,7 @@ import com.treinamento.api.output.EntregaOutput;
 import com.treinamento.domain.exception.DomainException;
 import com.treinamento.domain.entity.Entrega;
 import com.treinamento.domain.repository.EntregaRepository;
-import com.treinamento.domain.service.EntregaService;
+import com.treinamento.domain.service.*;
 
 import lombok.AllArgsConstructor;
 

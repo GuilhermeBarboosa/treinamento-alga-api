@@ -3,6 +3,7 @@ package com.treinamento.domain.service;
 import com.treinamento.domain.entity.Cliente;
 import com.treinamento.domain.entity.Entrega;
 import com.treinamento.domain.entity.StatusEntrega;
+import com.treinamento.domain.exception.DomainException;
 import com.treinamento.domain.repository.EntregaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class EntregaService {
         entrega.setDataPedido(OffsetDateTime.now());
         return entregaRepository.save(entrega);
 
+    }
+    
+    public Entrega buscarEntrega(Long entregaId) {
+    	return entregaRepository.findById(entregaId)
+				.orElseThrow(() -> new DomainException("Entrega não encontrada"));
     }
 
 
